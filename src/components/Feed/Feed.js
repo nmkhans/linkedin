@@ -6,6 +6,7 @@ import SubscriptionIcon from '@mui/icons-material/Subscriptions';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import InputOpntion from '../InputOption/InputOpntion';
+import Post from './../Post/Post';
 
 const Feed = () => {
     return (
@@ -26,7 +27,11 @@ const Feed = () => {
                 </div>
             </div>
 
-            {/*  */}
+            {/* Posts */}
+            <Post 
+            name="Moin Khan"
+            description="This is amazing"
+            message="This is my message"/>
         </div>
     );
 };
