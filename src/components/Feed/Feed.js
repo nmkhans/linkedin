@@ -8,20 +8,22 @@ import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import InputOpntion from '../InputOption/InputOpntion';
 import Post from './../Post/Post';
 import { database } from '../../firebase.init';
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, getDocs, setDoc, query, orderBy } from "firebase/firestore";
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
     const usersCollection = collection(database, 'posts');
+    const searchQuery = query(usersCollection, orderBy("timeStamp", "desc"))
+
     useEffect(() => {
         const getPost = async () => {
-            const data = await getDocs(usersCollection)
+            const data = await getDocs(searchQuery)
             const myData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
             setPosts(myData);
         }
 
         getPost();
-    }, [usersCollection]);
+    }, [searchQuery, usersCollection]);
 
     const handlePost = async (event) => {
         event.preventDefault();
@@ -31,6 +33,9 @@ const Feed = () => {
             name: "Moin Khan",
             description: "Full stack Developer",
             message: message,
+            photoUrl: "",
+            timeStamp: serverTimestamp(),
+            like: 0,
         })
         event.target.reset();
     }
@@ -58,9 +63,11 @@ const Feed = () => {
                 posts.map(post => (
                     <Post
                         key={post.id}
+                        id={post.id}
                         name={post.name}
                         description={post.description}
-                        message={post.message} />
+                        message={post.message}
+                        like={post.like} />
                 ))
             }
         </div>

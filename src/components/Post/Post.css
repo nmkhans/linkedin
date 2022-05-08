@@ -31,3 +31,7 @@
     display: flex;
     justify-content: space-evenly
 }
+
+.post__buttons .post__like {
+    display: inline-flex !important;
+}

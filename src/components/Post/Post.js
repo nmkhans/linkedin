@@ -6,8 +6,20 @@ import InputOpntion from '../InputOption/InputOpntion';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import { collection, updateDoc, doc } from 'firebase/firestore';
+import { database } from '../../firebase.init';
 
-const Post = ({name, description, message, photoUrl}) => {
+const Post = ({ name, description, message, photoUrl, like, id }) => {
+
+    const usersCollection = collection(database, 'posts');
+    const docRef = doc(usersCollection, id);
+
+    const handleLike = async () => {
+        // eslint-disable-next-line no-unused-vars
+        const update = await updateDoc(docRef, {
+            like: like + 1,
+        });
+    }
     return (
         <div className="Post">
             <div className="post__header">
@@ -23,22 +35,25 @@ const Post = ({name, description, message, photoUrl}) => {
             </div>
 
             <div className="post__buttons">
+                <span onClick={handleLike}>
+                    <InputOpntion
+                        Icon={ThumbUpOffAltIcon}
+                        title="Like"
+                        color="gray"
+                        like={like} />
+                </span>
                 <InputOpntion
-                Icon={ThumbUpOffAltIcon} 
-                title="Like" 
-                color="gray" />
+                    Icon={ChatOutlinedIcon}
+                    title="Comment"
+                    color="gray" />
                 <InputOpntion
-                Icon={ChatOutlinedIcon} 
-                title="Comment" 
-                color="gray" />
+                    Icon={ShareOutlinedIcon}
+                    title="Share"
+                    color="gray" />
                 <InputOpntion
-                Icon={ShareOutlinedIcon} 
-                title="Share" 
-                color="gray" />
-                <InputOpntion
-                Icon={SendOutlinedIcon} 
-                title="Send" 
-                color="gray" />
+                    Icon={SendOutlinedIcon}
+                    title="Send"
+                    color="gray" />
             </div>
         </div>
     );
